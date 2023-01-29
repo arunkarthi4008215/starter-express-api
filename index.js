@@ -46,6 +46,6 @@ app.get('/', (req, res) => {
 
 // const server = http.createServer(app);
 //  server.listen(port, () => console.log(`API running on localhost:${port}`));
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 5000)
 
  

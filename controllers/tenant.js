@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var router = express.Router();
 const bodyParser = require("body-parser")
-var client = require('../Connections/astra_connection');
+var client = require('../connections/astra_connection');
  
 app.use(bodyParser.urlencoded({
   extended: true
