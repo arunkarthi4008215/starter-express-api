@@ -4,7 +4,7 @@ async function run(){
 //**************** */ Develop*****************
 //    client = new Client({
 //          cloud: {
-//          secureConnectBundle: "./Connections/secure-connect-allmartb2b-dev.zip",
+//          secureConnectBundle: "./connections/secure-connect-allmartb2b-dev.zip",
 //          },
 //          credentials: {
 //          username: "eKqUgOeXQzlefEXBxRwRPfHW",
@@ -14,7 +14,7 @@ async function run(){
 //**************** */ Live *****************
    client = new Client({
          cloud: {
-         secureConnectBundle: "./Connections/secure-connect-allmartb2bprod.zip",
+         secureConnectBundle: "./connections/secure-connect-allmartb2bprod.zip",
          },
          credentials: {
          username: "ZybozuQdrPjtwCgXlIwOQfxD",
