@@ -1,7 +1,7 @@
 // api url
-const api_url = "http://localhost:3000/api/v2/productapi/getProductCount";
-const api_url1 = "http://localhost:3000/api/v1/tenant/gettenantList";
-const api_url2 = "http://localhost:3000/api/v1/productapi/getSearchProductList";
+const api_url = "https://different-glasses-eel.cyclic.app//api/v2/productapi/getProductCount";
+const api_url1 = "https://different-glasses-eel.cyclic.app//api/v1/tenant/gettenantList";
+const api_url2 = "https://different-glasses-eel.cyclic.app//api/v1/productapi/getSearchProductList";
 
 // Defining async function
 async function getapi(url) {
@@ -197,7 +197,7 @@ reload()
 // ************************** Excle Downlaod *****************
 
 async function generateExcel() {
-    const api_url2 = "http://localhost:3000/api/v1/productapi/getSearchProductList"
+    const api_url2 = "https://different-glasses-eel.cyclic.app//api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url2);
 
@@ -219,7 +219,7 @@ async function generateExcel() {
 }
 
 async function generateTenantList() {
-    const api_url2 = "http://localhost:3000/api/v1/tenant/gettenantList"
+    const api_url2 = "https://different-glasses-eel.cyclic.app//api/v1/tenant/gettenantList"
     // Storing response
     const response = await fetch(api_url2);
 
