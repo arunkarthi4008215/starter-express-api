@@ -1,7 +1,10 @@
 // api url
-const api_url = "https://different-glasses-eel.cyclic.app/api/v2/productapi/getProductCount";
-const api_url1 = "https://different-glasses-eel.cyclic.app/api/v1/tenant/gettenantList";
-const api_url2 = "https://different-glasses-eel.cyclic.app/api/v1/productapi/getSearchProductList";
+const liveUrl = "https://different-glasses-eel.cyclic.app"
+const localUrl = "http://localhost:5000"
+
+const api_url =  liveUrl + "/api/v1/productapi/getProductCount";
+const api_url1 =  liveUrl + "/api/v1/tenant/gettenantList";
+const api_url2 =  liveUrl + "/api/v1/productapi/getSearchProductList";
 
 // Defining async function
 async function getapi(url) {
@@ -31,11 +34,9 @@ async function getTenantList(url) {
 }
 
 async function getSearchList(url) {
-    document.getElementById("product-search").style.display = 'none';
-    document.getElementById("dataloader").style.display = 'block';
 	// Storing response
 	const response = await fetch(url);
-	
+	document.getElementById("dataloader").style.display = 'block';
 	// Storing data in form of JSON
 	var data = await response.json();
 	if (response) {
@@ -45,8 +46,8 @@ async function getSearchList(url) {
     searchResultData(data)
 }
 // Calling that async function
-getapi(api_url);
-getTenantList(api_url1);
+// getapi(api_url);
+// getTenantList(api_url1);
 getSearchList(api_url2);
 // Function to hide the loader
 function hideloader() {
@@ -192,12 +193,11 @@ function searchResultData(data) {
 function reload(){
     getSearchList(api_url2);
 }
-reload()
 
 // ************************** Excle Downlaod *****************
 
 async function generateExcel() {
-    const api_url2 = "http:localhost:5000/api/v1/productapi/getSearchProductList"
+    const api_url2 = liveUrl + "/api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url2);
 
@@ -219,7 +219,7 @@ async function generateExcel() {
 }
 
 async function generateTenantList() {
-    const api_url2 = "http:localhost:5000/api/v1/tenant/gettenantList"
+    const api_url2 = liveUrl + "/api/v1/tenant/gettenantList"
     // Storing response
     const response = await fetch(api_url2);
 
