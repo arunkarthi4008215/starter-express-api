@@ -2,10 +2,10 @@
 const liveUrl = "https://different-glasses-eel.cyclic.app"
 const localUrl = "http://localhost:5000"
 
-const api_url =  localUrl + "/api/v1/productapi/getProductCount";
-const api_url1 =  localUrl + "/api/v1/tenant/gettenantList";
-const api_url2 =  localUrl + "/api/v1/productapi/getSearchProductList";
-const api_url3 =  localUrl + "/api/v1/productSearch/getAutoSearchProductList";
+const api_url =  liveUrl + "/api/v1/productapi/getProductCount";
+const api_url1 =  liveUrl + "/api/v1/tenant/gettenantList";
+const api_url2 =  liveUrl + "/api/v1/productapi/getSearchProductList";
+const api_url3 =  liveUrl + "/api/v1/productSearch/getAutoSearchProductList";
 
 // Defining async function
 async function getapi(url) {
@@ -248,7 +248,7 @@ function reloadautocomplete(){
 // ************************** Excle Downlaod *****************
 
 async function generateExcel() {
-    const api_url2 = localUrl + "/api/v1/productapi/getSearchProductList"
+    const api_url2 = liveUrl + "/api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url2);
 
@@ -270,7 +270,7 @@ async function generateExcel() {
 }
 
 async function generateautoCompleteExcel() {
-    // const url = localUrl + "/api/v1/productapi/getSearchProductList"
+    // const url = liveUrl + "/api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url3);
 
