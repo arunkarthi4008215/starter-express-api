@@ -1,14 +1,6 @@
 
-
-// const utillClass = {
-//     function isEmpty(valString){
-//     if(valString === "" || valString === undefined || valString === null || valString.isEmpty()){
-//         return true;
-//     }
-//     else{
-//         return false;
-//     }
-// }
-// }
-
-// module.exports isEmpty();
+module.exports = {
+    custom_sort:function (a, b) {
+        return new Date(a.searched_date + a.searched_time).getTime() - new Date(a.searched_date + a.searched_time).getTime();
+    }
+}    

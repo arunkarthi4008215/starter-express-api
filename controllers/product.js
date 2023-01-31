@@ -32,7 +32,7 @@ router.get('/getProductList', async function (req, res, next) {
   }
 });
 router.get('/getSearchProductList', async function (req, res, next) {
-  let sqlQueryStr = "SELECT tenant_id,search_product,search_term,searched_date,searched_time FROM allmartprod.user_search_term"
+  let sqlQueryStr = "SELECT tenant_id,search_product,search_term,searched_date,searched_time,created_at FROM allmartprod.user_search_term"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({  
@@ -52,7 +52,7 @@ router.get('/getSearchProductList', async function (req, res, next) {
         tenantList.push(element.tenant_id.toString().trim())
       }
     });
-    let tenantQueryStr = "SELECT id,account,name,email,type  FROM allmartprod.tenant where type = 'b' allow filtering"
+    let tenantQueryStr = "SELECT id,account,name,email,type FROM allmartprod.tenant where type = 'b' allow filtering"
     let tenants = await client.execute(tenantQueryStr);
     
     let tenantNameList = tenants.rows
@@ -63,18 +63,17 @@ router.get('/getSearchProductList', async function (req, res, next) {
         tenantFilterList.push(tenant)
       }
     });
-    // console.log(tenantFilterList);
     dataList.forEach(element => {
-      tenantFilterList.forEach(item => {
-        if (element.tenant_id.toString().trim() === item.id.toString().trim()) {
-          element.tenant_id = item.name
+        const tenantIndex = tenantFilterList.findIndex(temp => temp.id.toString().trim() === element.tenant_id.toString().trim())
+        if (tenantIndex != -1) {
+          element.tenant_id = tenantFilterList[tenantIndex].name
           tenantData.push(element);
         }else{
           element.tenant_id = "unknown"
           tenantData.push(element);
         }
-      });
     });
+    tenantData = tenantData.sort((a, b) =>  b.created_at - a.created_at );
     res.send({
       tenantData
     });
