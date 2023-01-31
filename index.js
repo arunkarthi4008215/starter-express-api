@@ -29,10 +29,12 @@ router.use(function(req, res, next) {
   next(); // make sure we go to the next routes and don't stop here
 });
 var productapi=require('./controllers/product');
+var productSearchapi=require('./controllers/product-search');
 var category=require('./controllers/category');
 var tenant=require('./controllers/tenant');
 
 app.use('/api/v1/productapi', productapi);
+app.use('/api/v1/productSearch', productSearchapi);
 app.use('/api/v1/tenant', tenant);
 app.use('/api/v1/category', category);
 

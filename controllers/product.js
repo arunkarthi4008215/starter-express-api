@@ -69,7 +69,8 @@ router.get('/getSearchProductList', async function (req, res, next) {
           element.tenant_id = tenantFilterList[tenantIndex].name
           tenantData.push(element);
         }else{
-          element.tenant_id = "unknown"
+          // console.log(element.tenant_id.toString());
+          element.tenant_id = "Testing"
           tenantData.push(element);
         }
     });

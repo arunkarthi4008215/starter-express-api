@@ -52,6 +52,7 @@
         <div id="employees" style="overflow: auto;"></div>
     </div>
     </div>
+    <div class="product-search">
     <div class="d-flex justify-content-center mb-2 ">
         <div class="card p-2">
             <h3>Buyer Product Search List
@@ -66,6 +67,24 @@
             <div class="spinner-border" role="status" id="dataloader"></div>
         </div>
         <div id="product-search" style="overflow: auto;"></div>
+    </div>
+    </div>
+    <div class="product-autocomplete">
+    <div class="d-flex justify-content-center mb-2 ">
+        <div class="card p-2">
+            <h3>Buyer Product Autocomplete Search List
+                <button onclick="reloadautocomplete()" class="btn btn-primary">
+                    Refresh <i class="bi bi-arrow-clockwise"></i></button>
+                    <button class="btn btn-success" onclick="generateautoCompleteExcel()">Download Excel<i class="bi bi-arrow-down-circle p-2"></i></button>
+            </h3>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status" id="autodataloader"></div>
+        </div>
+        <div id="product-autocomplete" style="overflow: auto;"></div>
+    </div>
     </div>
 </body>
 

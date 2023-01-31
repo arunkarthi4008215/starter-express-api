@@ -2,9 +2,10 @@
 const liveUrl = "https://different-glasses-eel.cyclic.app"
 const localUrl = "http://localhost:5000"
 
-const api_url =  liveUrl + "/api/v1/productapi/getProductCount";
-const api_url1 =  liveUrl + "/api/v1/tenant/gettenantList";
-const api_url2 =  liveUrl + "/api/v1/productapi/getSearchProductList";
+const api_url =  localUrl + "/api/v1/productapi/getProductCount";
+const api_url1 =  localUrl + "/api/v1/tenant/gettenantList";
+const api_url2 =  localUrl + "/api/v1/productapi/getSearchProductList";
+const api_url3 =  localUrl + "/api/v1/productSearch/getAutoSearchProductList";
 
 // Defining async function
 async function getapi(url) {
@@ -45,10 +46,23 @@ async function getSearchList(url) {
 	}
     searchResultData(data)
 }
+
+async function getAutoComplete(url) {
+	// Storing response
+	const response = await fetch(url);
+	document.getElementById("autodataloader").style.display = 'block';
+	// Storing data in form of JSON
+	var data = await response.json();
+	if (response) {
+        document.getElementById("autodataloader").style.display = 'none';
+	}
+    getAutoCompleteResultData(data)
+}
 // Calling that async function
 // getapi(api_url);
 // getTenantList(api_url1);
 getSearchList(api_url2);
+
 // Function to hide the loader
 function hideloader() {
 	document.getElementById('loading').style.display = 'none';
@@ -188,16 +202,53 @@ function searchResultData(data) {
 	// Setting innerHTML as tab variable
 	// console.log(tab);
 	document.getElementById("product-search").innerHTML = tab;
+    getAutoComplete(api_url3);
 }
 
 function reload(){
     getSearchList(api_url2);
 }
 
+
+
+// ************************** Autocomplete Downlaod *****************
+function getAutoCompleteResultData(data) {
+	let tab =
+		`<table class="table table-bordered">
+        <tr>
+            <th>S.No</th>
+            <th>User Name</th>
+            <th>Search Term</th>
+            <th>Searched Date</th>
+            <th>Searched Time</th>
+        </tr> `;
+	
+	// Loop to access all rows
+    let i = 1
+	for (let r of data.tenantData) {
+		tab += `
+		<tr>    <td>${i}</td>
+                <td><strong>${r.tenant_id}</strong></td>
+                <td>${r.search_term}</td>
+                <td>${r.searched_date}</td>
+                <td>${r.searched_time}</td>
+            </tr>`;
+            i +=1
+	}
+	`</table>`
+	// Setting innerHTML as tab variable
+	// console.log(tab);
+	document.getElementById("product-autocomplete").innerHTML = tab;
+}
+
+function reloadautocomplete(){
+    getAutoComplete(api_url3);
+}
+// ************************** Excle Downlaod *****************
 // ************************** Excle Downlaod *****************
 
 async function generateExcel() {
-    const api_url2 = liveUrl + "/api/v1/productapi/getSearchProductList"
+    const api_url2 = localUrl + "/api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url2);
 
@@ -206,6 +257,27 @@ async function generateExcel() {
     const headingColumnNames = [
         "User Name",
         "Searched Product",
+        "Search Term",
+        "Searched Date",
+        "Search Time",
+    ]
+    filename = 'product_search_report.xlsx';
+    var ws = XLSX.utils.json_to_sheet(data.tenantData);
+    XLSX.utils.sheet_add_aoa(ws, [headingColumnNames], { origin: "A1" });
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "search");
+    XLSX.writeFile(wb, filename);
+}
+
+async function generateautoCompleteExcel() {
+    // const url = localUrl + "/api/v1/productapi/getSearchProductList"
+    // Storing response
+    const response = await fetch(api_url3);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    const headingColumnNames = [
+        "User Name",
         "Search Term",
         "Searched Date",
         "Search Time",
