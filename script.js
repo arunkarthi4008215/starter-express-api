@@ -1,7 +1,7 @@
 // api url
-const api_url = "http://localhost:5000/api/v2/productapi/getProductCount";
-const api_url1 = "http://localhost:5000/api/v1/tenant/gettenantList";
-const api_url2 = "http://localhost:5000/api/v1/productapi/getSearchProductList";
+const api_url = "https://different-glasses-eel.cyclic.app/api/v2/productapi/getProductCount";
+const api_url1 = "https://different-glasses-eel.cyclic.app/api/v1/tenant/gettenantList";
+const api_url2 = "https://different-glasses-eel.cyclic.app/api/v1/productapi/getSearchProductList";
 
 // Defining async function
 async function getapi(url) {
