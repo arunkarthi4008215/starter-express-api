@@ -11,7 +11,25 @@ router.get('/', (req, res) => {
   res.send('api works');
 });
 
-
+router.get('/getSkuProductList', async function (req, res, next) {
+  let sqlQueryStr = "SELECT name,code,variant_name,uom,gst_percentage,description  FROM allmartprod.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
+  let rs = await client.execute(sqlQueryStr);
+  if (!rs) {
+    res.send({
+      status: 404,  
+      message: "No Reords Found!"
+    });
+  } else {
+    res.send(
+      {
+        status: 200,
+        data: rs.rows,
+        count:rs.rows.length,
+        message: "Data Successfully Recieved!"
+      }
+    );
+  }
+});
 router.get('/getProductList', async function (req, res, next) {
   let sqlQueryStr = "SELECT name,variant_name,image_set,category  FROM allmartprod.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);

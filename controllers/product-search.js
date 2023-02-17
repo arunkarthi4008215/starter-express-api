@@ -61,4 +61,21 @@ router.get('/getAutoSearchProductList', async function (req, res, next) {
     }
   });
 
+
+  // router.get('/getAllproducts', async function (req, res, next) {
+  //   let sqlQueryStr = "SELECT id,tenant_id,branchid,code,name,variant_name,cost_per_unit,uom FROM allmartprod.tenant_product"
+  //   let rs = await client.execute(sqlQueryStr);
+  //   if (!rs) {
+  //     res.send({  
+  //       status: 404,
+  //       message: "No Reords Found!"
+  //     });
+  //   } else {
+  //     let tenantData = rs.rows
+  //     tenantData = tenantData.sort((a, b) =>  b.created_at - a.created_at );
+  //     res.send({
+  //       tenantData
+  //     });
+  //   }
+  // });
   module.exports = router;

@@ -1,6 +1,6 @@
 // api url
 const liveUrl = "https://different-glasses-eel.cyclic.app"
-const localUrl = "http://localhost:5000"
+const localUrl = "http://localhost:3000"
 
 const api_url =  liveUrl + "/api/v1/productapi/getProductCount";
 const api_url1 =  liveUrl + "/api/v1/tenant/gettenantList";
@@ -284,6 +284,53 @@ async function generateautoCompleteExcel() {
     ]
     filename = 'product_search_report.xlsx';
     var ws = XLSX.utils.json_to_sheet(data.tenantData);
+    XLSX.utils.sheet_add_aoa(ws, [headingColumnNames], { origin: "A1" });
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "search");
+    XLSX.writeFile(wb, filename);
+}
+
+async function generateTenantList() {
+    const api_url2 = liveUrl + "/api/v1/tenant/gettenantList"
+    // Storing response
+    const response = await fetch(api_url2);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    const headingColumnNames = [
+        "Brand",
+        "Entity",
+        "Account ID",
+        "Email",
+        "Mobile",
+        "Type",
+        "GST",
+        "Status",
+    ]
+    filename = 'customerList.xlsx';
+    var ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.sheet_add_aoa(ws, [headingColumnNames], { origin: "A1" });
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "search");
+    XLSX.writeFile(wb, filename);
+}
+async function generateSkuProductList() {
+    const url = liveUrl + "/api/v1/productapi/getSkuProductList"
+    // Storing response
+    const response = await fetch(url);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    const headingColumnNames = [
+        "Product Name",
+        "Product Code",
+        "Product Variant Name",
+        "Uom",
+        "Gst Percentage",
+        "Description",
+    ]
+    filename = 'product_sku_list.xlsx';
+    var ws = XLSX.utils.json_to_sheet(data.data);
     XLSX.utils.sheet_add_aoa(ws, [headingColumnNames], { origin: "A1" });
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "search");
