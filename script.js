@@ -1,11 +1,11 @@
 // api url
-const liveUrl = "https://different-glasses-eel.cyclic.app"
-const localUrl = "http://localhost:3000"
+const base_url = "https://different-glasses-eel.cyclic.app"
+// const base_url = "http://localhost:3000"
 
-const api_url =  liveUrl + "/api/v1/productapi/getProductCount";
-const api_url1 =  liveUrl + "/api/v1/tenant/gettenantList";
-const api_url2 =  liveUrl + "/api/v1/productapi/getSearchProductList";
-const api_url3 =  liveUrl + "/api/v1/productSearch/getAutoSearchProductList";
+const api_url =  base_url + "/api/v1/productapi/getProductCount";
+const api_url1 =  base_url + "/api/v1/tenant/gettenantList";
+const api_url2 =  base_url + "/api/v1/productapi/getSearchProductList";
+const api_url3 =  base_url + "/api/v1/productSearch/getAutoSearchProductList";
 
 // Defining async function
 async function getapi(url) {
@@ -248,7 +248,7 @@ function reloadautocomplete(){
 // ************************** Excle Downlaod *****************
 
 async function generateExcel() {
-    const api_url2 = liveUrl + "/api/v1/productapi/getSearchProductList"
+    const api_url2 = base_url + "/api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url2);
 
@@ -270,7 +270,7 @@ async function generateExcel() {
 }
 
 async function generateautoCompleteExcel() {
-    // const url = liveUrl + "/api/v1/productapi/getSearchProductList"
+    // const url = base_url + "/api/v1/productapi/getSearchProductList"
     // Storing response
     const response = await fetch(api_url3);
 
@@ -291,7 +291,7 @@ async function generateautoCompleteExcel() {
 }
 
 async function generateTenantList() {
-    const api_url2 = liveUrl + "/api/v1/tenant/gettenantList"
+    const api_url2 = base_url + "/api/v1/tenant/gettenantList"
     // Storing response
     const response = await fetch(api_url2);
 
@@ -315,7 +315,7 @@ async function generateTenantList() {
     XLSX.writeFile(wb, filename);
 }
 async function generateSkuProductList() {
-    const url = liveUrl + "/api/v1/productapi/getSkuProductList"
+    const url = base_url + "/api/v1/productapi/getSkuProductList"
     // Storing response
     const response = await fetch(url);
 
@@ -338,7 +338,7 @@ async function generateSkuProductList() {
 }
 
 async function generateTenantList() {
-    const api_url2 = liveUrl + "/api/v1/tenant/gettenantList"
+    const api_url2 = base_url + "/api/v1/tenant/gettenantList"
     // Storing response
     const response = await fetch(api_url2);
 

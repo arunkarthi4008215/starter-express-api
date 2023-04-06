@@ -3,6 +3,7 @@ var app = express();
 var router = express.Router();
 const bodyParser = require("body-parser")
 var client = require('../connections/astra_connection');
+const Utill = require('../service/utill')
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -12,7 +13,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/getAutoSearchProductList', async function (req, res, next) {
-    let sqlQueryStr = "SELECT tenant_id,search_term,searched_date,searched_time,created_at FROM allmartprod.user_autocomplete_term"
+    let [start, end] = Utill.getWeekDates();
+    let sqlQueryStr = "SELECT tenant_id,search_term,searched_date,searched_time,created_at FROM allmartprod.user_autocomplete_term WHERE created_at >= '" + start.toString() + "' AND created_at <= '"+ end.toString()+"' allow filtering;"
     let rs = await client.execute(sqlQueryStr);
     if (!rs) {
       res.send({  
@@ -21,6 +23,7 @@ router.get('/getAutoSearchProductList', async function (req, res, next) {
       });
     } else {
       dataList = rs.rows;
+      console.log('Autocomlete count',dataList.length)
       tenantList = [];
       tenantData = [];
       dataList.forEach(element => {
@@ -45,12 +48,8 @@ router.get('/getAutoSearchProductList', async function (req, res, next) {
       });
       dataList.forEach(element => {
           const tenantIndex = tenantFilterList.findIndex(temp => temp.id.toString().trim() === element.tenant_id.toString().trim())
-          if (tenantIndex != -1) {
+          if (tenantIndex != -1 && element.tenant_id.toString() !="00133519-17a5-4a5a-953c-90edfc6d9ddf"  ) {
             element.tenant_id = tenantFilterList[tenantIndex].name
-            tenantData.push(element);
-          }else{
-            // console.log(element.tenant_id.toString());
-            element.tenant_id = "Testing"
             tenantData.push(element);
           }
       });

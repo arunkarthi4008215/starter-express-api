@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var router = express.Router();
 const bodyParser = require("body-parser")
+const Utill = require('../service/utill')
 var client = require('../connections/astra_connection');
 
 app.use(bodyParser.urlencoded({
@@ -12,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/getSkuProductList', async function (req, res, next) {
-  let sqlQueryStr = "SELECT name,code,variant_name,uom,gst_percentage,description  FROM allmartprod.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
+  let sqlQueryStr = "SELECT name,code,variant_name,uom,gst_percentage,order_qty_threshold_min,tenant_id,description  FROM allmartprod.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({
@@ -20,11 +21,25 @@ router.get('/getSkuProductList', async function (req, res, next) {
       message: "No Reords Found!"
     });
   } else {
+    let productsList = rs.rows
+    let sqlQueryStr = "SELECT id,name,brand FROM allmartprod.tenant"
+    let tenant = await client.execute(sqlQueryStr);
+    let tenantList = tenant.rows
+    productsList.forEach(item =>{
+      tenantIdx = tenantList.findIndex(temp => temp.id.toString() == item.tenant_id.toString())
+      if (tenantIdx == -1){
+        item.tenant_id = "-"
+        
+      }else{
+
+        item.tenant_id = tenantList[tenantIdx].name
+      }
+    })
     res.send(
       {
         status: 200,
-        data: rs.rows,
-        count:rs.rows.length,
+        data: productsList,
+        count:productsList.length,
         message: "Data Successfully Recieved!"
       }
     );
@@ -50,7 +65,8 @@ router.get('/getProductList', async function (req, res, next) {
   }
 });
 router.get('/getSearchProductList', async function (req, res, next) {
-  let sqlQueryStr = "SELECT tenant_id,search_product,search_term,searched_date,searched_time,created_at FROM allmartprod.user_search_term"
+  let [start, end] = Utill.getWeekDates();
+  let sqlQueryStr = "SELECT tenant_id,search_product,search_term,searched_date,searched_time,created_at FROM allmartprod.user_search_term WHERE created_at >= '" + start.toString() + "' AND created_at <= '"+ end.toString()+"' allow filtering;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({  
@@ -83,12 +99,8 @@ router.get('/getSearchProductList', async function (req, res, next) {
     });
     dataList.forEach(element => {
         const tenantIndex = tenantFilterList.findIndex(temp => temp.id.toString().trim() === element.tenant_id.toString().trim())
-        if (tenantIndex != -1) {
+        if (tenantIndex != -1 && element.tenant_id.toString() !="00133519-17a5-4a5a-953c-90edfc6d9ddf") {
           element.tenant_id = tenantFilterList[tenantIndex].name
-          tenantData.push(element);
-        }else{
-          // console.log(element.tenant_id.toString());
-          element.tenant_id = "Testing"
           tenantData.push(element);
         }
     });
@@ -100,7 +112,7 @@ router.get('/getSearchProductList', async function (req, res, next) {
 })
 
 router.get('/getProductCount', async function (req, res, next) {
-  let sqlQueryStr = "SELECT id,tenant_id,name,code,image_set,image_url,status  FROM allmartprod.tenant_product"
+  let sqlQueryStr = "SELECT id,tenant_id,name,code,image_set,image_url,status,delivered_by,mark_updown_amount,mark_updown_percentage  FROM allmartprod.tenant_product where mark_updown_amount >= '' ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({  
@@ -145,8 +157,11 @@ router.get('/getProductCount', async function (req, res, next) {
             "Approved_Products": (element.status == 'approved' && element.tenant_id.toString() === item.id.toString() )? 1 : 0,
             "Pending_Products": (element.status == 'pending' && element.tenant_id.toString() === item.id.toString() )? 1 : 0,
             "Rejected_Products": (element.status == 'rejected' && element.tenant_id.toString() === item.id.toString() )? 1 : 0,
+            "Third_Party_Delivery": (element.delivered_by == '1' && element.tenant_id.toString() === item.id.toString() )? 1 : 0,
+            "Own_Delivery": (element.delivered_by == '2' && element.tenant_id.toString() === item.id.toString() )? 1 : 0,
             "Product_Without_Image":(element.image_set.web_view == ''  && element.tenant_id.toString() === item.id.toString()) ? 1 : 0,
-            "Product_With_Image": (element.image_set.web_view != '' && element.tenant_id.toString() === item.id.toString()) ? 1 : 0
+            "Product_With_Image": (element.image_set.web_view != '' && element.tenant_id.toString() === item.id.toString()) ? 1 : 0,
+            "Product_With_Image": (element.mark_updown_amount != '' && element.tenant_id.toString() === item.id.toString()) ? 1 : 0
           })
         } else {
           tenantData[tenantIndex] = {
@@ -157,6 +172,8 @@ router.get('/getProductCount', async function (req, res, next) {
             "Approved_Products": (element.status == 'approved' && element.tenant_id.toString() === item.id.toString() ) ? tenantData[tenantIndex].Approved_Products + 1 : tenantData[tenantIndex].Approved_Products,
             "Pending_Products": (element.status == 'pending' && element.tenant_id.toString() === item.id.toString() ) ? tenantData[tenantIndex].Pending_Products + 1 : tenantData[tenantIndex].Pending_Products,
             "Rejected_Products": (element.status == 'rejected' && element.tenant_id.toString() === item.id.toString() ) ? tenantData[tenantIndex].Rejected_Products + 1 : tenantData[tenantIndex].Rejected_Products,
+            "Third_Party_Delivery": (element.delivered_by == '1' && element.tenant_id.toString() === item.id.toString() )? tenantData[tenantIndex].Third_Party_Delivery + 1 : tenantData[tenantIndex].Third_Party_Delivery,
+            "Own_Delivery": (element.delivered_by == '2' && element.tenant_id.toString() === item.id.toString() )? tenantData[tenantIndex].Own_Delivery + 1 : tenantData[tenantIndex].Own_Delivery,
             "Product_Without_Image": (element.image_set.web_view == ''&& element.tenant_id.toString() === item.id.toString()) ? tenantData[tenantIndex].Product_Without_Image + 1 : tenantData[tenantIndex].Product_Without_Image,
             "Product_With_Image": (element.image_set.web_view != '' && element.tenant_id.toString() === item.id.toString()) ? tenantData[tenantIndex].Product_With_Image + 1 : tenantData[tenantIndex].Product_With_Image
           }
