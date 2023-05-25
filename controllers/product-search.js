@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 router.get('/getAutoSearchProductList', async function (req, res, next) {
     let [start, end] = Utill.getWeekDates();
-    let sqlQueryStr = "SELECT tenant_id,search_term,searched_date,searched_time,created_at FROM allmartprod.user_autocomplete_term WHERE created_at >= '" + start.toString() + "' AND created_at <= '"+ end.toString()+"' allow filtering;"
+    let sqlQueryStr = "SELECT tenant_id,search_term,searched_date,searched_time,created_at FROM supplybuy.user_autocomplete_term WHERE created_at >= '" + start.toString() + "' AND created_at <= '"+ end.toString()+"' allow filtering;"
     let rs = await client.execute(sqlQueryStr);
     if (!rs) {
       res.send({  
@@ -35,7 +35,7 @@ router.get('/getAutoSearchProductList', async function (req, res, next) {
           tenantList.push(element.tenant_id.toString().trim())
         }
       });
-      let tenantQueryStr = "SELECT id,account,name,email,type FROM allmartprod.tenant where type = 'b' allow filtering"
+      let tenantQueryStr = "SELECT id,account,name,email,type FROM supplybuy.tenant where type = 'b' allow filtering"
       let tenants = await client.execute(tenantQueryStr);
       
       let tenantNameList = tenants.rows
@@ -62,7 +62,7 @@ router.get('/getAutoSearchProductList', async function (req, res, next) {
 
 
   // router.get('/getAllproducts', async function (req, res, next) {
-  //   let sqlQueryStr = "SELECT id,tenant_id,branchid,code,name,variant_name,cost_per_unit,uom FROM allmartprod.tenant_product"
+  //   let sqlQueryStr = "SELECT id,tenant_id,branchid,code,name,variant_name,cost_per_unit,uom FROM supplybuy.tenant_product"
   //   let rs = await client.execute(sqlQueryStr);
   //   if (!rs) {
   //     res.send({  

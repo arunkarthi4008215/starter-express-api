@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 
 router.get('/getCategoryList',async function (req, res, next) {
-  let sqlQueryStr = "SELECT *  FROM allmartprod.product_category"
+  let sqlQueryStr = "SELECT *  FROM supplybuy.product_category"
   let rs =await client.execute( sqlQueryStr);
     if (!rs) {
       res.send({
@@ -59,12 +59,12 @@ router.post('/inserttenant', async function (req, res, next){
   let taxid = req.body.taxid;
   let verified_by = req.body.verified_by;
   let verified_date = req.body.verified_date;
-  // let sqlQueryStr = "INSERT INTO allmartprod.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (" + id + ", " + type + ", " + account + "," + active + ",'" + address1 + "'," + address2 + "," + brand + "," + brand_id + ",'" + brand_url + "'," + category + ",'" + city + "','" + country + "','" + created_at + "','" + created_by + "','" + email + "','" + fssai + "','" + mobile + "','" + name + "','" + postalcode + "','" + referal + "','" + state + "','" + status + "','" + taxid + "','" + verified_by + "'," + verified_date + ");"
+  // let sqlQueryStr = "INSERT INTO supplybuy.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (" + id + ", " + type + ", " + account + "," + active + ",'" + address1 + "'," + address2 + "," + brand + "," + brand_id + ",'" + brand_url + "'," + category + ",'" + city + "','" + country + "','" + created_at + "','" + created_by + "','" + email + "','" + fssai + "','" + mobile + "','" + name + "','" + postalcode + "','" + referal + "','" + state + "','" + status + "','" + taxid + "','" + verified_by + "'," + verified_date + ");"
   // console.log(sqlQueryStr);
-  // let sqlQueryStr = "INSERT INTO allmartprod.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,document_url,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (00a6fa25-df29-4701-6067-557932591770,'node',3456.6,true,'west street','east street','Supplybuy',{7d1b7cc2-9f55-449c-bdbe-14a998004b44},'https://www.w3schools.com/nodejs/nodejs_mysql.asp',{'Grocery & Condiments'},'Kumbakonam','India','2022-11-28 11:43:51.115',00a6fa25-df29-4701-6067-557932591768,{'Image':'https://cassandra.apache.org/doc/latest/cassandra/cql/types.html'},'allpos@allpos.software',0.0,'9876543210','allpos','612602','any','dert','erte','22AAAAA0000A1ZZ',00a6fa25-df29-4701-6067-557932591768,'2022-11-28 11:43:51.115');"
+  // let sqlQueryStr = "INSERT INTO supplybuy.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,document_url,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (00a6fa25-df29-4701-6067-557932591770,'node',3456.6,true,'west street','east street','Supplybuy',{7d1b7cc2-9f55-449c-bdbe-14a998004b44},'https://www.w3schools.com/nodejs/nodejs_mysql.asp',{'Grocery & Condiments'},'Kumbakonam','India','2022-11-28 11:43:51.115',00a6fa25-df29-4701-6067-557932591768,{'Image':'https://cassandra.apache.org/doc/latest/cassandra/cql/types.html'},'allpos@allpos.software',0.0,'9876543210','allpos','612602','any','dert','erte','22AAAAA0000A1ZZ',00a6fa25-df29-4701-6067-557932591768,'2022-11-28 11:43:51.115');"
 	// client.execute("INSERT INTO people.subscribers (id, name, address, email, phone) VALUES (now(), '" + input.name + "', '" + input.address + "', '" + input.email + "', '" + input.phone + "')",[], function(err, result){
 
-    let sqlQueryStr ="INSERT INTO allmartprod.tenant "
+    let sqlQueryStr ="INSERT INTO supplybuy.tenant "
     + "(id,type,account,active,address1,address2,"
     + "brand,brand_id,brand_url,category,city,country,created_at,created_by,email,"
     + "fssai,mobile,name,postalcode,referal,state,status,"

@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/getSkuProductList', async function (req, res, next) {
-  let sqlQueryStr = "SELECT name,code,variant_name,uom,gst_percentage,order_qty_threshold_min,tenant_id,description  FROM allmartprod.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
+  let sqlQueryStr = "SELECT name,code,variant_name,uom,gst_percentage,order_qty_threshold_min,tenant_id,description  FROM supplybuy.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({
@@ -22,7 +22,7 @@ router.get('/getSkuProductList', async function (req, res, next) {
     });
   } else {
     let productsList = rs.rows
-    let sqlQueryStr = "SELECT id,name,brand FROM allmartprod.tenant"
+    let sqlQueryStr = "SELECT id,name,brand FROM supplybuy.tenant"
     let tenant = await client.execute(sqlQueryStr);
     let tenantList = tenant.rows
     productsList.forEach(item =>{
@@ -46,7 +46,7 @@ router.get('/getSkuProductList', async function (req, res, next) {
   }
 });
 router.get('/getProductList', async function (req, res, next) {
-  let sqlQueryStr = "SELECT name,variant_name,image_set,category  FROM allmartprod.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
+  let sqlQueryStr = "SELECT name,variant_name,image_set,category  FROM supplybuy.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({
@@ -66,7 +66,7 @@ router.get('/getProductList', async function (req, res, next) {
 });
 router.get('/getSearchProductList', async function (req, res, next) {
   let [start, end] = Utill.getWeekDates();
-  let sqlQueryStr = "SELECT tenant_id,search_product,search_term,searched_date,searched_time,created_at FROM allmartprod.user_search_term WHERE created_at >= '" + start.toString() + "' AND created_at <= '"+ end.toString()+"' allow filtering;"
+  let sqlQueryStr = "SELECT tenant_id,search_product,search_term,searched_date,searched_time,created_at FROM supplybuy.user_search_term WHERE created_at >= '" + start.toString() + "' AND created_at <= '"+ end.toString()+"' allow filtering;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({  
@@ -86,7 +86,7 @@ router.get('/getSearchProductList', async function (req, res, next) {
         tenantList.push(element.tenant_id.toString().trim())
       }
     });
-    let tenantQueryStr = "SELECT id,account,name,email,type FROM allmartprod.tenant where type = 'b' allow filtering"
+    let tenantQueryStr = "SELECT id,account,name,email,type FROM supplybuy.tenant where type = 'b' allow filtering"
     let tenants = await client.execute(tenantQueryStr);
     
     let tenantNameList = tenants.rows
@@ -112,7 +112,7 @@ router.get('/getSearchProductList', async function (req, res, next) {
 })
 
 router.get('/getProductCount', async function (req, res, next) {
-  let sqlQueryStr = "SELECT id,tenant_id,name,code,image_set,image_url,status,delivered_by,mark_updown_amount,mark_updown_percentage  FROM allmartprod.tenant_product where mark_updown_amount >= '' ALLOW FILTERING;"
+  let sqlQueryStr = "SELECT id,tenant_id,name,code,image_set,image_url,status,delivered_by,mark_updown_amount,mark_updown_percentage  FROM supplybuy.tenant_product where mark_updown_amount >= '' ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({  
@@ -133,7 +133,7 @@ router.get('/getProductCount', async function (req, res, next) {
       }
     });
 
-    let tenantQueryStr = "SELECT id,account,name,email,type  FROM allmartprod.tenant"
+    let tenantQueryStr = "SELECT id,account,name,email,type  FROM supplybuy.tenant"
     let tenants = await client.execute(tenantQueryStr);
 
     let tenantNameList = tenants.rows
@@ -218,12 +218,12 @@ router.post('/inserttenant', async function (req, res, next) {
   let verified_by = req.body.verified_by;
   let verified_date = req.body.verified_date;
   
-  // let sqlQueryStr = "INSERT INTO allmartprod.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (" + id + ", " + type + ", " + account + "," + active + ",'" + address1 + "'," + address2 + "," + brand + "," + brand_id + ",'" + brand_url + "'," + category + ",'" + city + "','" + country + "','" + created_at + "','" + created_by + "','" + email + "','" + fssai + "','" + mobile + "','" + name + "','" + postalcode + "','" + referal + "','" + state + "','" + status + "','" + taxid + "','" + verified_by + "'," + verified_date + ");"
+  // let sqlQueryStr = "INSERT INTO supplybuy.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (" + id + ", " + type + ", " + account + "," + active + ",'" + address1 + "'," + address2 + "," + brand + "," + brand_id + ",'" + brand_url + "'," + category + ",'" + city + "','" + country + "','" + created_at + "','" + created_by + "','" + email + "','" + fssai + "','" + mobile + "','" + name + "','" + postalcode + "','" + referal + "','" + state + "','" + status + "','" + taxid + "','" + verified_by + "'," + verified_date + ");"
   // console.log(sqlQueryStr);
-  // let sqlQueryStr = "INSERT INTO allmartprod.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,document_url,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (00a6fa25-df29-4701-6067-557932591770,'node',3456.6,true,'west street','east street','Supplybuy',{7d1b7cc2-9f55-449c-bdbe-14a998004b44},'https://www.w3schools.com/nodejs/nodejs_mysql.asp',{'Grocery & Condiments'},'Kumbakonam','India','2022-11-28 11:43:51.115',00a6fa25-df29-4701-6067-557932591768,{'Image':'https://cassandra.apache.org/doc/latest/cassandra/cql/types.html'},'allpos@allpos.software',0.0,'9876543210','allpos','612602','any','dert','erte','22AAAAA0000A1ZZ',00a6fa25-df29-4701-6067-557932591768,'2022-11-28 11:43:51.115');"
+  // let sqlQueryStr = "INSERT INTO supplybuy.Tenant (id,type,account,active,address1,address2,brand,brand_id,brand_url,category,city,country,created_at,created_by,document_url,email,fssai,mobile,name,postalcode,referal,state,status,taxid,verified_by,verified_date) VALUES (00a6fa25-df29-4701-6067-557932591770,'node',3456.6,true,'west street','east street','Supplybuy',{7d1b7cc2-9f55-449c-bdbe-14a998004b44},'https://www.w3schools.com/nodejs/nodejs_mysql.asp',{'Grocery & Condiments'},'Kumbakonam','India','2022-11-28 11:43:51.115',00a6fa25-df29-4701-6067-557932591768,{'Image':'https://cassandra.apache.org/doc/latest/cassandra/cql/types.html'},'allpos@allpos.software',0.0,'9876543210','allpos','612602','any','dert','erte','22AAAAA0000A1ZZ',00a6fa25-df29-4701-6067-557932591768,'2022-11-28 11:43:51.115');"
   // client.execute("INSERT INTO people.subscribers (id, name, address, email, phone) VALUES (now(), '" + input.name + "', '" + input.address + "', '" + input.email + "', '" + input.phone + "')",[], function(err, result){
 
-  let sqlQueryStr = "INSERT INTO allmartprod.tenant "
+  let sqlQueryStr = "INSERT INTO supplybuy.tenant "
     + "(id,type,account,active,address1,address2,"
     + "brand,brand_id,brand_url,category,city,country,created_at,created_by,email,"
     + "fssai,mobile,name,postalcode,referal,state,status,"
