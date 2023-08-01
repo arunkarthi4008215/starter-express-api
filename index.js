@@ -47,7 +47,9 @@ const port = process.env.PORT || 3000;
 app.set('port', port);
 
 const server = http.createServer(app);
-//  server.listen(port, () => console.log(`API running on localhost:${port}`));
-app.listen(process.env.PORT || 5000 ,()=> {console.log("App Listening on http://localhost:5000")})
+// Local hosting
+ server.listen(port, () => console.log(`API running on localhost:${port}`));
+//  Cyclic Hosting
+// app.listen(process.env.PORT || 5000 ,()=> {console.log("App Listening on http://localhost:5000")})
 
  

@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/getSkuProductList', async function (req, res, next) {
-  let sqlQueryStr = "SELECT name,code,variant_name,uom,gst_percentage,order_qty_threshold_min,tenant_id,description  FROM supplybuy.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
+  let sqlQueryStr = "SELECT category,subcategory,code,name,variant_name,uom,gst_percentage,cost_per_unit,order_qty_threshold_min,tenant_id,description  FROM supplybuy.tenant_product where status='approved' and ispublished = true and isenabled = true and isdelete = false ALLOW FILTERING;"
   let rs = await client.execute(sqlQueryStr);
   if (!rs) {
     res.send({

@@ -1,12 +1,13 @@
 // api url
-const base_url = "https://different-glasses-eel.cyclic.app"
-// const base_url = "http://localhost:3000"
+// const base_url = "https://different-glasses-eel.cyclic.app"
+const base_url = "http://localhost:3000"
 
 const api_url =  base_url + "/api/v1/productapi/getProductCount";
 const api_url1 =  base_url + "/api/v1/tenant/gettenantList";
 const api_url2 =  base_url + "/api/v1/productapi/getSearchProductList";
 const api_url3 =  base_url + "/api/v1/productSearch/getAutoSearchProductList";
-
+const api_url4 =  base_url + "/api/v1/productSearch/getActionToCartList";
+getActionCartList(api_url4)
 // Defining async function
 async function getapi(url) {
 	
@@ -58,6 +59,19 @@ async function getAutoComplete(url) {
 	}
     getAutoCompleteResultData(data)
 }
+
+// Action To Cart Start
+async function getActionCartList(url) {
+	// Storing response
+	const response = await fetch(url);
+	// Storing data in form of JSON
+	var data = await response.json();
+    getActionCartListData(data.tenantData)
+}
+
+function reloadActionToCart(){
+    getActionCartList(api_url4)
+}
 // Calling that async function
 // getapi(api_url);
 // getTenantList(api_url1);
@@ -103,6 +117,41 @@ function show(data) {
 	document.getElementById("employees").innerHTML = tab;
 }
 
+function getActionCartListData(data) {
+	let tab =
+		`<table class="table table-bordered">
+        <tr>
+            <th>S.No</th>
+            <th>Buyer Name</th>
+            <th>Product Name</th>
+            <th>Product Quantiy</th>
+            <th>Status</th>
+            <th>Added At</th>
+            <th>Removed At</th>
+        </tr> `;
+	
+	// Loop to access all rows
+    let i = 1
+	for (let r of data) {
+		tab += `
+		<tr>    <td>${i}</td>
+                <td><strong>${r.tenant_id}</strong></td>
+                <td><strong>${r.product_id}</strong></td>
+                <td>${r.quantity}</td>
+                <td>${r.status}</td>
+                <td>${r.created_at}</td>
+                <td>${r.modified_at}</td>
+                <td>
+                <span class="text-success">${r.status.toUpperCase()}</span>
+                </td>
+            </tr>`;
+            i +=1
+	}
+	`</table>`
+	// Setting innerHTML as tab variable
+	// console.log(tab);
+	document.getElementById("action-cart").innerHTML = tab;
+}
 
 function customer(data) {
 	let tab =
@@ -314,6 +363,8 @@ async function generateTenantList() {
     XLSX.utils.book_append_sheet(wb, ws, "search");
     XLSX.writeFile(wb, filename);
 }
+
+
 async function generateSkuProductList() {
     const url = base_url + "/api/v1/productapi/getSkuProductList"
     // Storing response
@@ -322,12 +373,16 @@ async function generateSkuProductList() {
     // Storing data in form of JSON
     var data = await response.json();
     const headingColumnNames = [
-        "Product Name",
+        "Category",
+        "Subcategory",
         "Product Code",
+        "Product Name",
         "Product Variant Name",
         "Uom",
         "Gst Percentage",
+        "Unit Price",
         "Description",
+        "Seller Name"
     ]
     filename = 'product_sku_list.xlsx';
     var ws = XLSX.utils.json_to_sheet(data.data);
