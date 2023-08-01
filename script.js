@@ -1,6 +1,6 @@
 // api url
-// const base_url = "https://different-glasses-eel.cyclic.app"
-const base_url = "http://localhost:3000"
+const base_url = "https://different-glasses-eel.cyclic.app"
+// const base_url = "http://localhost:3000"
 
 const api_url =  base_url + "/api/v1/productapi/getProductCount";
 const api_url1 =  base_url + "/api/v1/tenant/gettenantList";
